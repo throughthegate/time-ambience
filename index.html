@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en">
+<head>
+	<title>Ambient Time</title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+	<style>
+
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha256-Sk3nkD6mLTMOF0EOpNtsIry+s1CsaqQC1rVLTAy+0yc= sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+	
+	<script>
+		$(function () {
+		  $('[data-toggle="popover"]').popover()
+		})
+		
+		$(function(){
+			//prepare Your data array with mp3 names
+			var dataArray=new Array(
+				"roadtrain",
+				"backgroundsounds",
+				"museumscenes",
+				"museummusic",
+				"taiwanmarket",
+				"mudvolcano",
+				"familydinner",
+				"kidsdance",
+				"openhouse",
+				"indiansingingnearby",
+				"banjosingers",
+				"kidspark"
+			);
+
+			//add html elements to the thing
+			$.each(dataArray, function( index, value ){
+				var mp3 =  "<audio controls preload autoplay loop id='" +  value + "' class='mysound' ><source src='sounds/" + value + ".mp3' type='audio/mpeg'></audio> "+ value +"<br/>";
+				$("#sounds").append(mp3);
+				$("#" + value).prop("volume", 0);
+			});
+			
+			//start with id=0 after 5 seconds
+
+	
+			window.setInterval(function(){
+				$('.mysound').each(function(i, obj){
+					var rand = 0.04;  //amount of change in volume.
+					var pos = Math.random();
+					var vol = $(obj).prop("volume");
+					console.log(vol);
+					if(pos > 0.5 && vol + rand < 1){
+						$(obj).prop("volume", vol + rand);
+					}if(pos <= 0.5 && vol - rand > 0){
+						$(obj).prop("volume", vol - rand);
+					}
+					
+				});
+			},200);    //millseconds between volume changes     
+		
+		});
+	</script>
+
+</head>
+<body>
+	<div class="main">
+		<h1>Here are some sounds</h1>
+	</div>
+	<div id="sounds">
+	
+	</div>
+	
+	
+	
+</body>
+</html>
