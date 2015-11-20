@@ -1,124 +1,23 @@
-<!DOCTYPE html>
-<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
-  <!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
-    <!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
-      <!--[if (gte IE 9)|!(IE)]><!-->
-      <html lang="en">
-        <head>
-          <title>Ambient Time</title>
-          <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
-          <style>
+<html lang="en">
+  <head>
+    <title>Ambient Time</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha256-Sk3nkD6mLTMOF0EOpNtsIry+s1CsaqQC1rVLTAy+0yc= sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
 
-          </style>
-          <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha256-Sk3nkD6mLTMOF0EOpNtsIry+s1CsaqQC1rVLTAy+0yc= sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.9/d3.min.js"></script>
 
-          <script>
-            //shuffle array function
-            function shuffle(array) {
-              var currentIndex = array.length, temporaryValue, randomIndex ;
+    <link href="viz.css" rel="stylesheet">
+  </head>
+  <body>
 
-              // While there remain elements to shuffle...
-              while (0 !== currentIndex) {
+    <div id="sounds">
+    </div>
 
-                // Pick a remaining element...
-                randomIndex = Math.floor(Math.random() * currentIndex);
-                currentIndex -= 1;
+    <div id="viz-container">
+      <svg id="viz"></svg>
+    </div>
 
-                // And swap it with the current element.
-                temporaryValue = array[currentIndex];
-                array[currentIndex] = array[randomIndex];
-                array[randomIndex] = temporaryValue;
-              }
-
-              return array;
-            }	
-
-            $(function () {
-              $('[data-toggle="popover"]').popover()
-            })
-
-
-            $(function(){
-              //prepare Your data array with mp3 names
-              var dataArray=new Array(
-              "roadtrain",
-              "backgroundsounds",
-              "banjosingers",
-              "museummusic",
-              "taiwanmarket",
-              "mudvolcano",
-              "familydinner",
-              "kidsdance",
-              "openhouse",
-              "indiansingingnearby",
-              "museumscenes",
-              "kidspark"
-              );
-              var shuffledArray = shuffle(dataArray);
-
-              //add html elements to the thing
-              $.each(shuffledArray, function( index, value ){
-                var mp3 =  "<audio controls preload autoplay loop id='" +  value + "' class='mysound' plus='1' ><source src='sounds/" + value + ".mp3' type='audio/mpeg'></audio> "+ value +"<br/>";
-                $("#sounds").append(mp3);
-                $("#" + value).prop("volume", 0);
-              });
-
-              //start with id=0 after 5 seconds
-
-
-              window.setInterval(function(){
-                $('.mysound').each(function(i, obj){
-
-                  //cycle the volume of each based on different cycles....
-                  var vol = $(obj).prop("volume");
-                  var set = (0.01 * (i+1))%1;
-                  //get a plus, minus attribute
-                  var plus = $(obj).attr("plus");
-                  if(plus == 1 && vol + set <= 1){
-                    $(obj).prop("volume", vol + set);
-                  }
-                  if(plus == 1 && vol + set > 1){
-                    $(obj).attr("plus",0);
-                    $(obj).prop("volume", vol-set);
-                  }
-                  if(plus == 0 && vol - set >= 0){
-                    $(obj).prop("volume", vol - set);
-                  }
-                  if(plus == 0 && vol - set < 0){
-                    $(obj).attr("plus",1);
-                    $(obj).prop("volume", vol+set);
-                  }
-
-                  //randomly change the volume
-                  /*	var rand = 0.04;  //amount of change in volume.
-                  var pos = Math.random();
-                  var vol = $(obj).prop("volume");
-                  console.log(vol);
-                  if(pos > 0.5 && vol + rand < 1){
-                    $(obj).prop("volume", vol + rand);
-                    }if(pos <= 0.5 && vol - rand > 0){
-                    $(obj).prop("volume", vol - rand);
-                  }*/
-
-                });
-              },500);    //millseconds between volume changes     
-
-            });
-          </script>
-
-        </head>
-        <body>
-          <div class="main">
-            <h1>Here are some sounds</h1>
-            <p>Refresh to shuffle order. Here, the volume changes at a different rate based on the order the sounds are listed.</p>
-            <a href="random.html">Listen to the sounds at random volumes</a>
-          </div>
-          <div id="sounds">
-
-          </div>
-
-
-
-        </body>
-      </html>
+    <script src="viz.js"></script>
+  </body>
+</html>
